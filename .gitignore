@@ -1,0 +1,5 @@
+.idea/
+cmake-build-*/
+build/
+__pycache__/
+pre_papes/
