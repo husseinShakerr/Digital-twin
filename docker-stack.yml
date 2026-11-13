@@ -1,0 +1,75 @@
+version: "3.9"
+services:
+
+  edge_home:
+    image: edge
+    deploy:
+      placement:
+        constraints:
+          - node.labels.edge == home
+    environment:
+      - BROKER=tcp://192.168.1.217:1883
+      - EDGE_TYPE=home
+    networks:
+      - iot_net
+
+  edge_work:
+    image: edge
+    deploy:
+      placement:
+        constraints:
+          - node.labels.edge == work
+    environment:
+      - BROKER=tcp://192.168.1.217:1883
+      - EDGE_TYPE=work
+    networks:
+      - iot_net
+
+  edge_mobile:
+    image: edge
+    deploy:
+      placement:
+        constraints:
+          - node.labels.edge == mobile
+    environment:
+      - BROKER=tcp://192.168.1.217:1883
+      - EDGE_TYPE=mobile
+    networks:
+      - iot_net
+
+  fog1:
+    image: fog
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == fog1
+    environment:
+      - BROKER=tcp://192.168.1.217:1883
+      - FOG_NODE=fog1
+    networks:
+      - iot_net
+
+  fog2:
+    image: fog
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == fog2
+    environment:
+      - BROKER=tcp://192.168.1.217:1883
+      - FOG_NODE=fog2
+    networks:
+      - iot_net
+
+  twin:
+    image: twin
+    deploy:
+      replicas: 1
+    environment:
+      - BROKER=tcp://192.168.1.217:1883
+    networks:
+      - iot_net
+
+networks:
+  iot_net:
+    driver: overlay

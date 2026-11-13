@@ -1,0 +1,12 @@
+FROM 192.168.1.217:5000/project-base:latest
+
+WORKDIR /app
+COPY twin /app/twin
+COPY common /app/common
+
+RUN g++ twin/main.cpp twin/twin.cpp twin/twinCallback.cpp \
+    -Itwin \
+    -o twin_service \
+    -lpaho-mqttpp3 -lpaho-mqtt3as
+
+CMD ["./twin_service"]
